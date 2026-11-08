@@ -1,6 +1,8 @@
 package xml
 
 import (
+	"bytes"
+	stdxml "encoding/xml"
 	"fmt"
 	"go/ast"
 	"go/parser"
@@ -270,4 +272,160 @@ func compareAcceptance(in string, c tokenCfg) string {
 		}
 	}
 	return ""
+}
+
+// legacyPositions is positions with internal/legacyxml as the decoder.
+func legacyPositions(in string, rk readerKind) (out []string, err error) {
+	r, rem := rk.make(in)
+	d := legacy.NewDecoder(r)
+	for len(out) < 2000 {
+		t, e := d.Token()
+		if e != nil {
+			out = append(out, fmt.Sprintf("err left=%d", rem()))
+			return out, e
+		}
+		out = append(out, fmt.Sprintf("%s left=%d", renderLegacy(t), rem()))
+	}
+	return out, nil
+}
+
+func TestReaderPositionAgainstLegacy(t *testing.T) {
+	inputs := legacyTestInputs(t)
+	inputs = append(inputs,
+		"<a>"+strings.Repeat("x", 10000)+"</a>trailing",
+		"<a>"+strings.Repeat("<!-- c -->", 600)+"</a>",
+		"<a "+strings.Repeat(`k="v" `, 2000)+"/>rest",
+		"<a><![CDATA["+strings.Repeat("y", 9000)+"]]></a>",
+		"<a>"+strings.Repeat("é", 5000)+"</a>\n",
+	)
+	bad := 0
+	for _, rk := range readerKinds {
+		for _, in := range inputs {
+			want, werr := legacyPositions(in, rk)
+			got, gerr := positions(in, rk)
+			// positions after a failing token are not meaningful when the error differs
+			if len(want) != len(got) || (werr == nil) != (gerr == nil) {
+				bad++
+				if bad <= 15 {
+					t.Errorf("[%s] %.60q: %d vs %d tokens (%v / %v)", rk.name, in, len(want), len(got), werr, gerr)
+				}
+				continue
+			}
+			for i := range want {
+				if want[i] != got[i] && !strings.HasPrefix(want[i], "err") {
+					bad++
+					if bad <= 15 {
+						t.Errorf("[%s] %.60q token %d:\n legacy %q\n    new %q", rk.name, in, i, want[i], got[i])
+					}
+					break
+				}
+			}
+		}
+	}
+	t.Logf("%d inputs x %d reader kinds, %d differences", len(inputs), len(readerKinds), bad)
+}
+
+// With an entity map the settings are consulted at every Read, and the
+// positions must still match.
+func TestBufferSourceEntityPositionAgainstLegacy(t *testing.T) {
+	input := "<r>" + strings.Repeat(`<i a="&amp;&lt;">x &amp; y &nbsp; z</i>`, 200) + "tail</r>rest"
+	rk := bufferKind(0)
+	run := func(newImpl bool) (out []string) {
+		r, rem := rk.make(input)
+		var next func() (string, error)
+		if newImpl {
+			d := NewDecoder(r)
+			d.Strict, d.Entity = false, HTMLEntity
+			next = func() (string, error) { t, e := d.Token(); return renderNew(t), e }
+		} else {
+			d := legacy.NewDecoder(r)
+			d.Strict, d.Entity = false, legacy.HTMLEntity
+			next = func() (string, error) { t, e := d.Token(); return renderLegacy(t), e }
+		}
+		for {
+			s, err := next()
+			out = append(out, fmt.Sprintf("%s err=%v left=%d", s, err, rem()))
+			if err != nil {
+				return
+			}
+		}
+	}
+	if want, got := run(false), run(true); !reflect.DeepEqual(got, want) {
+		for i := range want {
+			if i >= len(got) || got[i] != want[i] {
+				t.Fatalf("token %d:\n legacy %q\n    new %q", i, want[i], got[min(i, len(got)-1)])
+			}
+		}
+		t.Fatalf("token counts differ: %d vs %d", len(want), len(got))
+	}
+}
+
+func TestCharDataBoundariesAgainstLegacy(t *testing.T) {
+	text := strings.Repeat("한글\r\n&amp;", 6000)
+	for _, input := range []string{
+		"<r>" + text + "</r>tail",
+		"<r>before<![CDATA[" + text + "]]>after</r>",
+		"<r><![CDATA[]]><![CDATA[a]]>b&amp;c<![CDATA[d]]></r>",
+	} {
+		for _, raw := range []bool{false, true} {
+			if diff := compareLegacyTokens(input, tokenCfg{strict: true, raw: raw}, true); diff != "" {
+				t.Fatal(diff)
+			}
+		}
+	}
+}
+
+func TestBenchmarkCatalogEquivalence(t *testing.T) {
+	name := os.Getenv("XMLFILE")
+	if name == "" {
+		t.Skip("set XMLFILE to the catalog benchmark input")
+	}
+	data, err := os.ReadFile(name)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var want benchCatalog
+	if err := stdxml.Unmarshal(data, &want); err != nil {
+		t.Fatal(err)
+	}
+	if len(want.Books) == 0 {
+		t.Fatal("benchmark input contains no books")
+	}
+	wantXML, err := stdxml.Marshal(want)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, engine := range []struct {
+		name      string
+		unmarshal func([]byte, any) error
+		marshal   func(any) ([]byte, error)
+	}{
+		{"stdlib", stdxml.Unmarshal, stdxml.Marshal},
+		{"legacy", legacy.Unmarshal, legacy.Marshal},
+		{"v1", Unmarshal, Marshal},
+	} {
+		t.Run(engine.name, func(t *testing.T) {
+			var got benchCatalog
+			if err := engine.unmarshal(data, &got); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(got, want) {
+				t.Fatal("decoded catalog differs from encoding/xml")
+			}
+			out, err := engine.marshal(got)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if !bytes.Equal(out, wantXML) {
+				t.Fatalf("encoded XML differs from encoding/xml: got %d bytes, want %d", len(out), len(wantXML))
+			}
+			var roundTrip benchCatalog
+			if err := stdxml.Unmarshal(out, &roundTrip); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(roundTrip, want) {
+				t.Fatal("round trip changed the catalog")
+			}
+		})
+	}
 }
