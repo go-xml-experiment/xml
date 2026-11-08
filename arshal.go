@@ -12,9 +12,9 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 var export = xmltext.Internal.Export(&xmlopts.AllowInternalUse)

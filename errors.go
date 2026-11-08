@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // ErrUnknownName is the error of a [SemanticError] for an attribute or

@@ -4,7 +4,7 @@
 
 // Package xml implements semantic processing of XML: it marshals Go values
 // to XML and unmarshals XML into Go values. It is built on the syntactic
-// layer in [github.com/Clickin/go-experiment-xml/xmltext], as encoding/json/v2 is built on
+// layer in [github.com/go-xml-experiment/xml/xmltext], as encoding/json/v2 is built on
 // encoding/json/jsontext.
 //
 // # Elements and text

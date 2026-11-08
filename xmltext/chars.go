@@ -7,7 +7,7 @@ package xmltext
 import (
 	"unicode/utf8"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlname"
+	"github.com/go-xml-experiment/xml/internal/xmlname"
 )
 
 // Byte classes for the text scanner.

@@ -14,7 +14,7 @@ import (
 	"unicode/utf8"
 	"unsafe"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // Encoder writes XML. Elements are opened with BeginElement, given

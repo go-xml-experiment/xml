@@ -11,8 +11,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // NewDecoder creates a new XML parser reading from r.

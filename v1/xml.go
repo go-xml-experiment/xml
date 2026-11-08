@@ -18,8 +18,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // A SyntaxError represents a syntax error in the XML input stream.

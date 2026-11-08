@@ -20,9 +20,9 @@ import (
 	"time"
 	"unicode/utf8"
 
-	xml "github.com/Clickin/go-experiment-xml/internal/legacyxml"
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	xml "github.com/go-xml-experiment/xml/internal/legacyxml"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 type kv struct{ name, value string }

@@ -10,8 +10,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // The struct tag grammar is that of encoding/xml:

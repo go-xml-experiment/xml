@@ -6,7 +6,7 @@ package xml_test
 
 import (
 	"fmt"
-	"github.com/Clickin/go-experiment-xml/v1"
+	"github.com/go-xml-experiment/xml/v1"
 	"log"
 	"strings"
 )

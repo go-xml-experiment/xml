@@ -4,7 +4,7 @@
 
 package xmltext
 
-import "github.com/Clickin/go-experiment-xml/internal/xmlopts"
+import "github.com/go-xml-experiment/xml/internal/xmlopts"
 
 // Internal is for internal use only.
 // This is exempt from the Go compatibility agreement.

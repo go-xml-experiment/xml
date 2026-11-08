@@ -14,8 +14,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // This file implements the marshaling of encoding/xml (version 1) on the

@@ -8,7 +8,7 @@ import (
 	"errors"
 	"unsafe"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // maxRetained is the largest buffer, in bytes, that Release keeps. A bigger

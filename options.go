@@ -5,13 +5,13 @@
 package xml
 
 import (
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // Options configure [Marshal], [MarshalWrite], [MarshalEncode], [Unmarshal],
 // [UnmarshalRead] and [UnmarshalDecode]. The options of
-// [github.com/Clickin/go-experiment-xml/xmltext] may be passed too and configure the underlying
+// [github.com/go-xml-experiment/xml/xmltext] may be passed too and configure the underlying
 // Encoder or Decoder. Later options override earlier ones.
 type Options = xmlopts.Option
 

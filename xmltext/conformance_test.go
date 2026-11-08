@@ -12,7 +12,7 @@ import (
 	"testing"
 	"testing/iotest"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // confRead reads every token of in with the default profile (plus opts) from

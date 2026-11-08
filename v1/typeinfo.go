@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
 )
 
 // typeInfo holds details for the xml representation of a type.

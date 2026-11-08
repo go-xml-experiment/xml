@@ -7,7 +7,7 @@ package xml
 import (
 	"testing"
 
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // A []Attr any,attr field keeps namespace declarations, so that Marshal

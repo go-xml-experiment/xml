@@ -1,4 +1,4 @@
-# go-experiment-xml
+# xml
 
 An experimental XML module for Go: a strict, namespace-aware streaming parser,
 a v2 marshaling API, and a faster drop-in replacement for `encoding/xml`.
@@ -12,12 +12,12 @@ The API may change until a tagged v1.0.0 release.
 
 | Import path | Package | Purpose |
 |---|---|---|
-| `github.com/Clickin/go-experiment-xml` | `xml` | v2 API: `Marshal`, `Unmarshal`, `MarshalWrite`, `UnmarshalRead`, options, caller-supplied marshalers |
-| `github.com/Clickin/go-experiment-xml/xmltext` | `xmltext` | Streaming `Decoder` and `Encoder` without reflection |
-| `github.com/Clickin/go-experiment-xml/v1` | `xml` | `encoding/xml` API implemented on `xmltext` |
+| `github.com/go-xml-experiment/xml` | `xml` | v2 API: `Marshal`, `Unmarshal`, `MarshalWrite`, `UnmarshalRead`, options, caller-supplied marshalers |
+| `github.com/go-xml-experiment/xml/xmltext` | `xmltext` | Streaming `Decoder` and `Encoder` without reflection |
+| `github.com/go-xml-experiment/xml/v1` | `xml` | `encoding/xml` API implemented on `xmltext` |
 
 ```
-go get github.com/Clickin/go-experiment-xml
+go get github.com/go-xml-experiment/xml
 ```
 
 Requires Go 1.25 or later.
@@ -27,7 +27,7 @@ Requires Go 1.25 or later.
 Change the import and nothing else:
 
 ```go
-import xml "github.com/Clickin/go-experiment-xml/v1"
+import xml "github.com/go-xml-experiment/xml/v1"
 ```
 
 The package keeps the behavior of `encoding/xml`, including its leniency. Its
@@ -49,7 +49,7 @@ package main
 import (
 	"fmt"
 
-	xml "github.com/Clickin/go-experiment-xml"
+	"github.com/go-xml-experiment/xml"
 )
 
 type Assertion struct {

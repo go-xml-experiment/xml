@@ -8,8 +8,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // decoderSource is the xmllegacy.TokenSource through which

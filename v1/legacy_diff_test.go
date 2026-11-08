@@ -17,7 +17,7 @@ import (
 	"strings"
 	"testing"
 
-	legacy "github.com/Clickin/go-experiment-xml/internal/legacyxml"
+	legacy "github.com/go-xml-experiment/xml/internal/legacyxml"
 )
 
 // The frozen encoding/xml in internal/legacyxml is the oracle. These tests

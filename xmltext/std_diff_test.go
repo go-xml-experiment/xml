@@ -13,8 +13,8 @@ import (
 	"testing"
 	"testing/iotest"
 
-	stdxml "github.com/Clickin/go-experiment-xml/internal/legacyxml"
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	stdxml "github.com/go-xml-experiment/xml/internal/legacyxml"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // The tests in this file compare xmltext with internal/legacyxml, a frozen

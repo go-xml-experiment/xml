@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"testing"
 
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // The small-document benchmarks measure what a call costs before it has much

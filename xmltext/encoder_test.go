@@ -7,7 +7,7 @@ package xmltext
 import (
 	"bytes"
 	"fmt"
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 	"math/rand"
 	"strings"
 	"testing"

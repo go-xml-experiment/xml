@@ -10,7 +10,7 @@ import (
 	"sync"
 	"unsafe"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // Unmarshal, Marshal and MarshalIndent reuse state only while it remains private.

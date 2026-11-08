@@ -13,11 +13,11 @@ import (
 	"reflect"
 	"unsafe"
 
-	_ "github.com/Clickin/go-experiment-xml" // implements Marshal; see printer.marshal
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
-	"github.com/Clickin/go-experiment-xml/internal/xmlname"
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	_ "github.com/go-xml-experiment/xml" // implements Marshal; see printer.marshal
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/internal/xmlname"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 const (

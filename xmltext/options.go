@@ -7,7 +7,7 @@ package xmltext
 import (
 	"io"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // Options configures a Decoder or Encoder. Obtain values with the option

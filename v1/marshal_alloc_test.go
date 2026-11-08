@@ -5,8 +5,8 @@
 package xml
 
 import (
-	"github.com/Clickin/go-experiment-xml/internal/race"
-	"github.com/Clickin/go-experiment-xml/internal/testenv"
+	"github.com/go-xml-experiment/xml/internal/race"
+	"github.com/go-xml-experiment/xml/internal/testenv"
 	"testing"
 )
 

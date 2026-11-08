@@ -14,7 +14,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 // dump reads every token of d and renders it, with names, attributes and text.

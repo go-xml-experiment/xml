@@ -8,8 +8,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/Clickin/go-experiment-xml/internal/race"
-	"github.com/Clickin/go-experiment-xml/internal/testenv"
+	"github.com/go-xml-experiment/xml/internal/race"
+	"github.com/go-xml-experiment/xml/internal/testenv"
 	"io"
 	"reflect"
 	"strconv"
@@ -17,7 +17,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 type Name = xmltext.Name

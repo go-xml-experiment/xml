@@ -6,8 +6,8 @@ package xmltext
 
 import (
 	"fmt"
-	"github.com/Clickin/go-experiment-xml/internal/testenv"
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/testenv"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 	"io"
 	"strings"
 	"testing"

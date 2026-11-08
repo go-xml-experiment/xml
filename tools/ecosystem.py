@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Plan 7.C: run public modules' own tests against encoding/xml and against the
-v1 compatibility layer (github.com/Clickin/go-experiment-xml/v1) and classify the
+v1 compatibility layer (github.com/go-xml-experiment/xml/v1) and classify the
 difference.
 
   python3 tools/ecosystem.py WORKDIR REPORT.json NAME=URL[#"packages"] ...
@@ -15,8 +15,8 @@ import json, os, re, subprocess, sys, time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-V1 = "github.com/Clickin/go-experiment-xml/v1"
-ROOT_MOD = "github.com/Clickin/go-experiment-xml"
+V1 = "github.com/go-xml-experiment/xml/v1"
+ROOT_MOD = "github.com/go-xml-experiment/xml"
 
 IMPORT_BLOCK = re.compile(r'(?m)^(\s*)(?:(\w+|_|\.)\s+)?"encoding/xml"(\s*)$')
 IMPORT_ONE = re.compile(r'(?m)^import\s+(?:(\w+|_|\.)\s+)?"encoding/xml"')

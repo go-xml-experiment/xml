@@ -7,7 +7,7 @@ package xml
 import (
 	"testing"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmllegacy"
+	"github.com/go-xml-experiment/xml/internal/xmllegacy"
 )
 
 // getTypeInfo converts the flags of xmllegacy.Field by value.

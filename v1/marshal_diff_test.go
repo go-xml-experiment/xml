@@ -7,7 +7,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	legacy "github.com/Clickin/go-experiment-xml/internal/legacyxml"
+	legacy "github.com/go-xml-experiment/xml/internal/legacyxml"
 )
 
 // Value types that exercise the encoder and decoder paths: attributes,

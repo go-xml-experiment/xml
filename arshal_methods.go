@@ -8,7 +8,7 @@ import (
 	"encoding"
 	"reflect"
 
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 var (

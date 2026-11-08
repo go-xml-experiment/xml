@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"sync"
 
-	"github.com/Clickin/go-experiment-xml/xmltext"
+	"github.com/go-xml-experiment/xml/xmltext"
 )
 
 // Marshalers is a list of functions that may override the marshal

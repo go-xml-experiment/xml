@@ -10,7 +10,7 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlname"
+	"github.com/go-xml-experiment/xml/internal/xmlname"
 )
 
 // boundary is one token located in the window: buf[start:end] is the whole

@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Clickin/go-experiment-xml/internal/xmlopts"
+	"github.com/go-xml-experiment/xml/internal/xmlopts"
 )
 
 func TestLegacyReferenceScanNoAllocations(t *testing.T) {
