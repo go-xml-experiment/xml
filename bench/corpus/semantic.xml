@@ -1,0 +1,2 @@
+<r a="x&amp;y" b="한😀"><n/> 
+ A&amp;<![CDATA[😀]]><!--ignored--><?pi ignored?> B <q x="a>b">한&#65;</q></r>

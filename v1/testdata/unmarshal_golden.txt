@@ -1,0 +1,463 @@
+# Unmarshal results from the encoding/xml decoder; see TestUnmarshalGolden.
+=== "<root xmlns=\"urn:n\" id=\"1\" n=\"2\" b=\"true\" xmlns:a=\"urn:a\" a:x=\"ax\" ta=\"tv\" ma=\"mv\" other=\"o\" ea=\"E\"><e>emb</e><items><item>one</item><item>two</item></items><a><b><c>deep</c></b></a><ptr ea=\"p\"><e>pe</e></ptr><i>1</i><i>-2</i><f>0.5</f><u>255</u><t>tt</t><dec n=\"d\">dv<k>k1</k></dec><toks><x/><y><z/></y></toks><bytes>raw</bytes><iface>if</iface><extra q=\"1\">ex</extra>chars<!--note--></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"TA":"tv","E":"emb","A":"E","Items":["one","two"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Char":"chars"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","Inner":"\u003ce\u003eemb\u003c/e\u003e\u003citems\u003e\u003citem\u003eone\u003c/item\u003e\u003citem\u003etwo\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003cc\u003edeep\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr ea=\"p\"\u003e\u003ce\u003epe\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e1\u003c/i\u003e\u003ci\u003e-2\u003c/i\u003e\u003cf\u003e0.5\u003c/f\u003e\u003cu\u003e255\u003c/u\u003e\u003ct\u003ett\u003c/t\u003e\u003cdec n=\"d\"\u003edv\u003ck\u003ek1\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cx/\u003e\u003cy\u003e\u003cz/\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003eraw\u003c/bytes\u003e\u003ciface\u003eif\u003c/iface\u003e\u003cextra q=\"1\"\u003eex\u003c/extra\u003echars\u003c!--note--\u003e"} err=
+{"N":"2","V":"chars","K":null} err=
+"chars" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"NS":"ax","TA":"tv","MA":{"V":"ma=mv"},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"","Local":"other"},"Value":"o"}],"E":"emb","A":"E","Items":["one","two"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"F":0.5,"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Iface":null,"Skip":"","Any":[{"XMLName":{"Space":"urn:n","Local":"extra"},"Attrs":[{"Name":{"Space":"","Local":"q"},"Value":"1"}],"Text":"ex"}],"Char":"chars","Remark":"note"} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"id"},"Value":"1"},{"Name":{"Space":"","Local":"n"},"Value":"2"},{"Name":{"Space":"","Local":"b"},"Value":"true"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"urn:a","Local":"x"},"Value":"ax"},{"Name":{"Space":"","Local":"ta"},"Value":"tv"},{"Name":{"Space":"","Local":"ma"},"Value":"mv"},{"Name":{"Space":"","Local":"other"},"Value":"o"},{"Name":{"Space":"","Local":"ea"},"Value":"E"}],"Text":"chars"}] err=
+=== "<root xmlns=\"urn:n\"><![CDATA[cd]]><?pi x?>&amp;&lt;&#65;</root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":"cd\u0026\u003cA"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003c![CDATA[cd]]\u003e\u003c?pi x?\u003e\u0026amp;\u0026lt;\u0026#65;"} err=
+{"N":"","V":"cd\u0026\u003cA","K":null} err=
+"cd\u0026\u003cA" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"cd\u0026\u003cA","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":"cd\u0026\u003cA"}] err=
+=== "<root xmlns=\"urn:wrong\"/>"
+- err=expected element <root> in name space urn:n but have urn:wrong
+{"XMLName":{"Space":"urn:wrong","Local":"root"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element <root> in name space urn:n but have urn:wrong
+[{"XMLName":{"Space":"urn:wrong","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:wrong"}],"Text":""}] err=
+=== "<x id=\"i\">a<b>c</b><!--d-->e</x>"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"i","Inner":"a\u003cb\u003ec\u003c/b\u003e\u003c!--d--\u003ee"} err=
+{"N":"","V":"ae","K":null} err=
+"ae" err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"i"}],"Text":"ae"}] err=
+=== "<dec n=\"1\"><k>a</k><k>b</k>v</dec>"
+- err=expected element type <root> but have <dec>
+{"XMLName":{"Space":"","Local":"dec"},"ID":"","Inner":"\u003ck\u003ea\u003c/k\u003e\u003ck\u003eb\u003c/k\u003ev"} err=
+{"N":"1","V":"v","K":["a","b"]} err=
+"v" err=
+- err=expected element type <root> but have <dec>
+[{"XMLName":{"Space":"","Local":"dec"},"Attrs":[{"Name":{"Space":"","Local":"n"},"Value":"1"}],"Text":"v"}] err=
+=== "<root xmlns=\"urn:n\"><u>256</u></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=strconv.ParseUint: parsing "256": value out of range
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003cu\u003e256\u003c/u\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseUint: parsing "256": value out of range
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><i>x</i></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[],"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=strconv.ParseInt: parsing "x": invalid syntax
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ci\u003ex\u003c/i\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseInt: parsing "x": invalid syntax
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\" b=\"maybe\"/>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=strconv.ParseBool: parsing "maybe": invalid syntax
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":""} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseBool: parsing "maybe": invalid syntax
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"b"},"Value":"maybe"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><items><item>1</item></items><items><item>2</item></items></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":["1","2"],"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003citems\u003e\u003citem\u003e1\u003c/item\u003e\u003c/items\u003e\u003citems\u003e\u003citem\u003e2\u003c/item\u003e\u003c/items\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":["1","2"],"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<a:root xmlns:a=\"urn:n\"><a:e>p</a:e></a:root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"p","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ca:e\u003ep\u003c/a:e\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:n"}],"E":"p","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:n"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><a><b><c>1</c></b><b><c>2</c></b></a></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"2","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ca\u003e\u003cb\u003e\u003cc\u003e1\u003c/c\u003e\u003c/b\u003e\u003cb\u003e\u003cc\u003e2\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"2","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<s>plain</s>"
+- err=expected element type <root> but have <s>
+{"XMLName":{"Space":"","Local":"s"},"ID":"","Inner":"plain"} err=
+{"N":"","V":"plain","K":null} err=
+"plain" err=
+- err=expected element type <root> but have <s>
+[{"XMLName":{"Space":"","Local":"s"},"Attrs":null,"Text":"plain"}] err=
+=== "<:/>"
+- err=expected element type <root> but have <:>
+{"XMLName":{"Space":"","Local":":"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <:>
+[{"XMLName":{"Space":"","Local":":"},"Attrs":null,"Text":""}] err=
+=== "<A:A/>"
+- err=expected element type <root> but have <A>
+{"XMLName":{"Space":"A","Local":"A"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <A>
+[{"XMLName":{"Space":"A","Local":"A"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"A=\"\"n=\"1\"A0=\"\"A=\"\"A=\"\"A=\"\"A=\"\"><e></e><items><item></item><item></item></items><a><b><c></c></b></a><ptr A=\"\"><e></e></ptr><i></i><i></i><f></f><u></u><t></t><dec A=\"\"><k></k></dec><toks><A/><y><A/></y></toks><bytes></bytes><iface></iface><extra A=\"\"></extra></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":null,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":"","Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003cc\u003e\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr A=\"\"\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e\u003c/i\u003e\u003ci\u003e\u003c/i\u003e\u003cf\u003e\u003c/f\u003e\u003cu\u003e\u003c/u\u003e\u003ct\u003e\u003c/t\u003e\u003cdec A=\"\"\u003e\u003ck\u003e\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cA/\u003e\u003cy\u003e\u003cA/\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003e\u003c/bytes\u003e\u003ciface\u003e\u003c/iface\u003e\u003cextra A=\"\"\u003e\u003c/extra\u003e"} err=
+{"N":"1","V":"","K":null} err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A0"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"F":0,"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":"","Iface":null,"Skip":"","Any":[{"XMLName":{"Space":"urn:n","Local":"extra"},"Attrs":[{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}],"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"n"},"Value":"1"},{"Name":{"Space":"","Local":"A0"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}] err=
+=== "<x id=\"i->e-d-\"/>\xaf0\x13<-d-\"/>\xaf0\x13Vـ"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"i-\u003ee-d-","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"i-\u003ee-d-"}],"Text":""}] err=
+=== "<A:./>"
+- err=expected element type <root> but have <.>
+{"XMLName":{"Space":"A","Local":"."},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <.>
+[{"XMLName":{"Space":"A","Local":"."},"Attrs":null,"Text":""}] err=
+=== "<root A=\"00\"A=\"00000\"id=\"0\"n=\"0\"A=\"0000\"A=\"00000\"A=\"00\"A=\"00\"A=\"p0\"A=\"0\"A=\"0\"><ptr A=\"0\"></ptr><dec A=\"0\"></dec><extra A=\"0\"></extra></root>"
+- err=expected element <root> in name space urn:n but have no name space
+{"XMLName":{"Space":"","Local":"root"},"ID":"0","Inner":"\u003cptr A=\"0\"\u003e\u003c/ptr\u003e\u003cdec A=\"0\"\u003e\u003c/dec\u003e\u003cextra A=\"0\"\u003e\u003c/extra\u003e"} err=
+{"N":"0","V":"","K":null} err=
+- err=
+- err=expected element <root> in name space urn:n but have no name space
+[{"XMLName":{"Space":"","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"00000"},{"Name":{"Space":"","Local":"id"},"Value":"0"},{"Name":{"Space":"","Local":"n"},"Value":"0"},{"Name":{"Space":"","Local":"A"},"Value":"0000"},{"Name":{"Space":"","Local":"A"},"Value":"00000"},{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"p0"},{"Name":{"Space":"","Local":"A"},"Value":"0"},{"Name":{"Space":"","Local":"A"},"Value":"0"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><i></i>></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":"\u003e"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ci\u003e\u003c/i\u003e\u003e"} err=
+{"N":"","V":"\u003e","K":null} err=
+"\u003e" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"\u003e","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":"\u003e"}] err=
+=== "<A../>"
+- err=expected element type <root> but have <A..>
+{"XMLName":{"Space":"","Local":"A.."},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <A..>
+[{"XMLName":{"Space":"","Local":"A.."},"Attrs":null,"Text":""}] err=
+=== "<x id=\">\"></x>"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"\u003e","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"\u003e"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\" id=\"1\" n=\"2\" b=\"true\" xmlns:a=\"urn:a\" a:x=\"ax\" ta=\"tv\" ma=\"mv\" other=\"o\" ea=\"E\"><e>emb</e><items><item>one</item><item>4wo</item></items><a><b><c>deep</c></b></a><ptr ea=\"p\"><e>pe</e></ptr><i>1</i><i>-2</i><f>0.5</f><u>255</u><t>tt</t><dec n=\"d\">dv<k>k1</k></dec><toks><x/><y><z/></y></toks><bytes>raw</bytes><iface>if</iface><extra q=\"1\">ex</extra>chars<!--note--></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"TA":"tv","E":"emb","A":"E","Items":["one","4wo"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Char":"chars"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","Inner":"\u003ce\u003eemb\u003c/e\u003e\u003citems\u003e\u003citem\u003eone\u003c/item\u003e\u003citem\u003e4wo\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003cc\u003edeep\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr ea=\"p\"\u003e\u003ce\u003epe\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e1\u003c/i\u003e\u003ci\u003e-2\u003c/i\u003e\u003cf\u003e0.5\u003c/f\u003e\u003cu\u003e255\u003c/u\u003e\u003ct\u003ett\u003c/t\u003e\u003cdec n=\"d\"\u003edv\u003ck\u003ek1\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cx/\u003e\u003cy\u003e\u003cz/\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003eraw\u003c/bytes\u003e\u003ciface\u003eif\u003c/iface\u003e\u003cextra q=\"1\"\u003eex\u003c/extra\u003echars\u003c!--note--\u003e"} err=
+{"N":"2","V":"chars","K":null} err=
+"chars" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"NS":"ax","TA":"tv","MA":{"V":"ma=mv"},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"","Local":"other"},"Value":"o"}],"E":"emb","A":"E","Items":["one","4wo"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"F":0.5,"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Iface":null,"Skip":"","Any":[{"XMLName":{"Space":"urn:n","Local":"extra"},"Attrs":[{"Name":{"Space":"","Local":"q"},"Value":"1"}],"Text":"ex"}],"Char":"chars","Remark":"note"} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"id"},"Value":"1"},{"Name":{"Space":"","Local":"n"},"Value":"2"},{"Name":{"Space":"","Local":"b"},"Value":"true"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"urn:a","Local":"x"},"Value":"ax"},{"Name":{"Space":"","Local":"ta"},"Value":"tv"},{"Name":{"Space":"","Local":"ma"},"Value":"mv"},{"Name":{"Space":"","Local":"other"},"Value":"o"},{"Name":{"Space":"","Local":"ea"},"Value":"E"}],"Text":"chars"}] err=
+=== "<A:00A0/>"
+- err=expected element type <root> but have <00A0>
+{"XMLName":{"Space":"A","Local":"00A0"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <00A0>
+[{"XMLName":{"Space":"A","Local":"00A0"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"b=\"\"><i></i><u>100</u><t>00</t><dec n=\"0\">0000</dec><bytes>000</bytes>000'00000000000></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"U":100,"T":"00","Dec":{"N":"0","V":"0000","K":null},"Toks":{"Names":null},"Bytes":"MDAw","Char":"000'00000000000\u003e"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ci\u003e\u003c/i\u003e\u003cu\u003e100\u003c/u\u003e\u003ct\u003e00\u003c/t\u003e\u003cdec n=\"0\"\u003e0000\u003c/dec\u003e\u003cbytes\u003e000\u003c/bytes\u003e000'00000000000\u003e"} err=
+{"N":"","V":"000'00000000000\u003e","K":null} err=
+"000'00000000000\u003e" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"F":0,"U":100,"T":"00","Dec":{"N":"0","V":"0000","K":null},"Toks":{"Names":null},"Bytes":"MDAw","Iface":null,"Skip":"","Any":null,"Char":"000'00000000000\u003e","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"b"},"Value":""}],"Text":"000'00000000000\u003e"}] err=
+=== "<A>0</A><"
+- err=expected element type <root> but have <A>
+{"XMLName":{"Space":"","Local":"A"},"ID":"","Inner":"0"} err=
+{"N":"","V":"0","K":null} err=
+"0" err=
+- err=expected element type <root> but have <A>
+[{"XMLName":{"Space":"","Local":"A"},"Attrs":null,"Text":"0"}] err=
+=== "<x id=\"\t\"></x>"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"\t","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"\t"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"A=\"\"b=\"0\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"><e></e><items><item></item><item></item></items><a><b><c></c></b></a><ptr A=\"\"><e></e></ptr><i></i><i></i><f></f><u></u><t></t><dec A=\"\"><k></k></dec><toks><A/><y><A/></y></toks><bytes></bytes><iface></iface><extra A=\"\"></extra></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":"","Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003cc\u003e\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr A=\"\"\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e\u003c/i\u003e\u003ci\u003e\u003c/i\u003e\u003cf\u003e\u003c/f\u003e\u003cu\u003e\u003c/u\u003e\u003ct\u003e\u003c/t\u003e\u003cdec A=\"\"\u003e\u003ck\u003e\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cA/\u003e\u003cy\u003e\u003cA/\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003e\u003c/bytes\u003e\u003ciface\u003e\u003c/iface\u003e\u003cextra A=\"\"\u003e\u003c/extra\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"F":0,"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":"","Iface":null,"Skip":"","Any":[{"XMLName":{"Space":"urn:n","Local":"extra"},"Attrs":[{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}],"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"b"},"Value":"0"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}] err=
+=== "<A:000/>"
+- err=expected element type <root> but have <000>
+{"XMLName":{"Space":"A","Local":"000"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <000>
+[{"XMLName":{"Space":"A","Local":"000"},"Attrs":null,"Text":""}] err=
+=== "<A:0aa/>"
+- err=expected element type <root> but have <0aa>
+{"XMLName":{"Space":"A","Local":"0aa"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <0aa>
+[{"XMLName":{"Space":"A","Local":"0aa"},"Attrs":null,"Text":""}] err=
+=== "<x id=\"i\"/>\xaf-d-->e<0\x13\x80"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"i","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"i"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"b=\"\"><i></i><u>100</u><t>00</t><dec n=\"0\">0000</dec><bytes>000</bytes>000000000000000></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"U":100,"T":"00","Dec":{"N":"0","V":"0000","K":null},"Toks":{"Names":null},"Bytes":"MDAw","Char":"000000000000000\u003e"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ci\u003e\u003c/i\u003e\u003cu\u003e100\u003c/u\u003e\u003ct\u003e00\u003c/t\u003e\u003cdec n=\"0\"\u003e0000\u003c/dec\u003e\u003cbytes\u003e000\u003c/bytes\u003e000000000000000\u003e"} err=
+{"N":"","V":"000000000000000\u003e","K":null} err=
+"000000000000000\u003e" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"F":0,"U":100,"T":"00","Dec":{"N":"0","V":"0000","K":null},"Toks":{"Names":null},"Bytes":"MDAw","Iface":null,"Skip":"","Any":null,"Char":"000000000000000\u003e","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"b"},"Value":""}],"Text":"000000000000000\u003e"}] err=
+=== "<root xmlns=\"0\"A=\"\"A=\"\"A=\"\"A:0=\"\"A=\"\"A=\"\"><e></e><items><item></item></items><ptr A=\"\"><e></e></ptr><i></i><i></i><f></f><u></u><t></t><dec><k></k></dec><toks><A/><y></y></toks><bytes></bytes><iface></iface><extra A=\"\"></extra></root>"
+- err=expected element <root> in name space urn:n but have 0
+{"XMLName":{"Space":"0","Local":"root"},"ID":"","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003cptr A=\"\"\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e\u003c/i\u003e\u003ci\u003e\u003c/i\u003e\u003cf\u003e\u003c/f\u003e\u003cu\u003e\u003c/u\u003e\u003ct\u003e\u003c/t\u003e\u003cdec\u003e\u003ck\u003e\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cA/\u003e\u003cy\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003e\u003c/bytes\u003e\u003ciface\u003e\u003c/iface\u003e\u003cextra A=\"\"\u003e\u003c/extra\u003e"} err=
+- err=
+- err=
+- err=expected element <root> in name space urn:n but have 0
+[{"XMLName":{"Space":"0","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"0"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"A","Local":"0"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}] err=
+=== "<A/>"
+- err=expected element type <root> but have <A>
+{"XMLName":{"Space":"","Local":"A"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <A>
+[{"XMLName":{"Space":"","Local":"A"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"uPn:n\"><![CDATA[cd]]><?pi x?>&amp;&lt;&#65;</root>"
+- err=expected element <root> in name space urn:n but have uPn:n
+{"XMLName":{"Space":"uPn:n","Local":"root"},"ID":"","Inner":"\u003c![CDATA[cd]]\u003e\u003c?pi x?\u003e\u0026amp;\u0026lt;\u0026#65;"} err=
+{"N":"","V":"cd\u0026\u003cA","K":null} err=
+"cd\u0026\u003cA" err=
+- err=expected element <root> in name space urn:n but have uPn:n
+[{"XMLName":{"Space":"uPn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"uPn:n"}],"Text":"cd\u0026\u003cA"}] err=
+=== "<A0:00/>"
+- err=expected element type <root> but have <00>
+{"XMLName":{"Space":"A0","Local":"00"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <00>
+[{"XMLName":{"Space":"A0","Local":"00"},"Attrs":null,"Text":""}] err=
+=== "<A:0AA0/>"
+- err=expected element type <root> but have <0AA0>
+{"XMLName":{"Space":"A","Local":"0AA0"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <0AA0>
+[{"XMLName":{"Space":"A","Local":"0AA0"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"id=\"\"n=\"1\"b=\"\"A=\"\"A=\"\"A=\"\"A=\"\"ea=\"\"><items><item></item><item></item></items><ptr></ptr><i></i><i></i><f>0</f><dec><k></k></dec><toks><A/><y><A/></y></toks></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003cptr\u003e\u003c/ptr\u003e\u003ci\u003e\u003c/i\u003e\u003ci\u003e\u003c/i\u003e\u003cf\u003e0\u003c/f\u003e\u003cdec\u003e\u003ck\u003e\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cA/\u003e\u003cy\u003e\u003cA/\u003e\u003c/y\u003e\u003c/toks\u003e"} err=
+{"N":"1","V":"","K":null} err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"F":0,"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"id"},"Value":""},{"Name":{"Space":"","Local":"n"},"Value":"1"},{"Name":{"Space":"","Local":"b"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"ea"},"Value":""}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\" id=\"1\" n=\"2\" b=\"true\" xmlns:a=\"urn:a\" a:x=\"ax\" ta=\"tv\" ma=\"mv\" other=\"X\" ea=\"E\"><e>emb</e><items><item>one</item><item>4wo</item></items><a><b><c>deep</c></b></a><ptr ea=\"p\"><e>pe</e></ptr><i>1</i><i>-2</i><f>0.5</f><u>255</u><t>tt</t><dec n=\"d\">dv<k>k1</k></dec><toks><x/><y><z/></y></toks><bytes>raw</bytes><iface>if</iface><extra q=\"1\">ex</extra>chars<!--note--></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"TA":"tv","E":"emb","A":"E","Items":["one","4wo"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Char":"chars"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","Inner":"\u003ce\u003eemb\u003c/e\u003e\u003citems\u003e\u003citem\u003eone\u003c/item\u003e\u003citem\u003e4wo\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003cc\u003edeep\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr ea=\"p\"\u003e\u003ce\u003epe\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e1\u003c/i\u003e\u003ci\u003e-2\u003c/i\u003e\u003cf\u003e0.5\u003c/f\u003e\u003cu\u003e255\u003c/u\u003e\u003ct\u003ett\u003c/t\u003e\u003cdec n=\"d\"\u003edv\u003ck\u003ek1\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cx/\u003e\u003cy\u003e\u003cz/\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003eraw\u003c/bytes\u003e\u003ciface\u003eif\u003c/iface\u003e\u003cextra q=\"1\"\u003eex\u003c/extra\u003echars\u003c!--note--\u003e"} err=
+{"N":"2","V":"chars","K":null} err=
+"chars" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"NS":"ax","TA":"tv","MA":{"V":"ma=mv"},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"","Local":"other"},"Value":"X"}],"E":"emb","A":"E","Items":["one","4wo"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"F":0.5,"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Iface":null,"Skip":"","Any":[{"XMLName":{"Space":"urn:n","Local":"extra"},"Attrs":[{"Name":{"Space":"","Local":"q"},"Value":"1"}],"Text":"ex"}],"Char":"chars","Remark":"note"} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"id"},"Value":"1"},{"Name":{"Space":"","Local":"n"},"Value":"2"},{"Name":{"Space":"","Local":"b"},"Value":"true"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"urn:a","Local":"x"},"Value":"ax"},{"Name":{"Space":"","Local":"ta"},"Value":"tv"},{"Name":{"Space":"","Local":"ma"},"Value":"mv"},{"Name":{"Space":"","Local":"other"},"Value":"X"},{"Name":{"Space":"","Local":"ea"},"Value":"E"}],"Text":"chars"}] err=
+=== "<root xmlns=\"urn:n\"><!0><!000></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003c!0\u003e\u003c!000\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><![CDATA[cd]]><?pi \x88?>&amp;&lt;&#65;</root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":"cd\u0026\u003cA"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003c![CDATA[cd]]\u003e\u003c?pi �?\u003e\u0026amp;\u0026lt;\u0026#65;"} err=
+{"N":"","V":"cd\u0026\u003cA","K":null} err=
+"cd\u0026\u003cA" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"cd\u0026\u003cA","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":"cd\u0026\u003cA"}] err=
+=== "<Կ/>"
+- err=expected element type <root> but have <Կ>
+{"XMLName":{"Space":"","Local":"Կ"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <Կ>
+[{"XMLName":{"Space":"","Local":"Կ"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"A=\"\"n=\"1\"b=\"\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"><e></e><items><item></item><item></item></items><a><b></b></a><ptr A=\"\"><e></e></ptr><i>0</i><i>0</i><f>A</f><u>0</u><t>0</t><dec A=\"\"></dec><toks></toks><bytes></bytes><iface></iface><extra\n\n\n A=\"\"></extra></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"U":0,"T":"0","Dec":{"N":"","V":"","K":null},"Toks":{"Names":null},"Bytes":"","Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr A=\"\"\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e0\u003c/i\u003e\u003ci\u003e0\u003c/i\u003e\u003cf\u003eA\u003c/f\u003e\u003cu\u003e0\u003c/u\u003e\u003ct\u003e0\u003c/t\u003e\u003cdec A=\"\"\u003e\u003c/dec\u003e\u003ctoks\u003e\u003c/toks\u003e\u003cbytes\u003e\u003c/bytes\u003e\u003ciface\u003e\u003c/iface\u003e\u003cextra\n\n\n A=\"\"\u003e\u003c/extra\u003e"} err=
+{"N":"1","V":"","K":null} err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseFloat: parsing "A": invalid syntax
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"n"},"Value":"1"},{"Name":{"Space":"","Local":"b"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><i></i></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ci\u003e\u003c/i\u003e"} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<x id=\"i\">a<b>s</b><!--d-->e</x>"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"i","Inner":"a\u003cb\u003es\u003c/b\u003e\u003c!--d--\u003ee"} err=
+{"N":"","V":"ae","K":null} err=
+"ae" err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"i"}],"Text":"ae"}] err=
+=== "<root A=\"00\"A=\"00000\"id=\"0\"n=\"0\"A=\"0000\"A=\"00000\"A=\"00\"A=\"00\"A=\"00\"A=\"0\"A=\"0\"><ptr A=\"0\"></ptr><dec A=\"0\"></dec><extra A=\"0\"></extra></root>"
+- err=expected element <root> in name space urn:n but have no name space
+{"XMLName":{"Space":"","Local":"root"},"ID":"0","Inner":"\u003cptr A=\"0\"\u003e\u003c/ptr\u003e\u003cdec A=\"0\"\u003e\u003c/dec\u003e\u003cextra A=\"0\"\u003e\u003c/extra\u003e"} err=
+{"N":"0","V":"","K":null} err=
+- err=
+- err=expected element <root> in name space urn:n but have no name space
+[{"XMLName":{"Space":"","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"00000"},{"Name":{"Space":"","Local":"id"},"Value":"0"},{"Name":{"Space":"","Local":"n"},"Value":"0"},{"Name":{"Space":"","Local":"A"},"Value":"0000"},{"Name":{"Space":"","Local":"A"},"Value":"00000"},{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"00"},{"Name":{"Space":"","Local":"A"},"Value":"0"},{"Name":{"Space":"","Local":"A"},"Value":"0"}],"Text":""}] err=
+=== "<x><!--0-->0</x>00000000"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"","Inner":"\u003c!--0--\u003e0"} err=
+{"N":"","V":"0","K":null} err=
+"0" err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":null,"Text":"0"}] err=
+=== "<A:0a/>"
+- err=expected element type <root> but have <0a>
+{"XMLName":{"Space":"A","Local":"0a"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <0a>
+[{"XMLName":{"Space":"A","Local":"0a"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><i></i>>></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":"\u003e\u003e"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ci\u003e\u003c/i\u003e\u003e\u003e"} err=
+{"N":"","V":"\u003e\u003e","K":null} err=
+"\u003e\u003e" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":[0],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"\u003e\u003e","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":"\u003e\u003e"}] err=
+=== "<root xmlns=\"\"xmlns=\"\"></root>"
+- err=expected element <root> in name space urn:n but have no name space
+{"XMLName":{"Space":"","Local":"root"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element <root> in name space urn:n but have no name space
+[{"XMLName":{"Space":"","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":""},{"Name":{"Space":"","Local":"xmlns"},"Value":""}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":""} err=
+- err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":""}] err=
+=== "<root xmlns=\"urnZn\" id=\"1\" n=\"2\" b=\"true\" xmlns:a=\"urn:a\" a:x=\"ax\" ta=\"tv\" ma=\"mv\" other=\"o\" ea=\"(\"><e></e><items><item>two</item></items><ptr ea=\"p\"><e></e></ptr><i>1</i><i>-2</i><f>0.5</f><u>255</u><t>tt</t><dec>dv<k>k1</k></dec><toks><x/><y></y></toks><bytes>raw</bytes><iface>if</iface><extra x=\"1\">Zx</extra>chars<!--note--></root>"
+- err=expected element <root> in name space urn:n but have urnZn
+{"XMLName":{"Space":"urnZn","Local":"root"},"ID":"1","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003etwo\u003c/item\u003e\u003c/items\u003e\u003cptr ea=\"p\"\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e1\u003c/i\u003e\u003ci\u003e-2\u003c/i\u003e\u003cf\u003e0.5\u003c/f\u003e\u003cu\u003e255\u003c/u\u003e\u003ct\u003ett\u003c/t\u003e\u003cdec\u003edv\u003ck\u003ek1\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cx/\u003e\u003cy\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003eraw\u003c/bytes\u003e\u003ciface\u003eif\u003c/iface\u003e\u003cextra x=\"1\"\u003eZx\u003c/extra\u003echars\u003c!--note--\u003e"} err=
+{"N":"2","V":"chars","K":null} err=
+"chars" err=
+- err=expected element <root> in name space urn:n but have urnZn
+[{"XMLName":{"Space":"urnZn","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urnZn"},{"Name":{"Space":"","Local":"id"},"Value":"1"},{"Name":{"Space":"","Local":"n"},"Value":"2"},{"Name":{"Space":"","Local":"b"},"Value":"true"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"urn:a","Local":"x"},"Value":"ax"},{"Name":{"Space":"","Local":"ta"},"Value":"tv"},{"Name":{"Space":"","Local":"ma"},"Value":"mv"},{"Name":{"Space":"","Local":"other"},"Value":"o"},{"Name":{"Space":"","Local":"ea"},"Value":"("}],"Text":"chars"}] err=
+=== "<root xmlns=\"urn:n\"id=\"\"n=\"1\"b=\"\"A=\"\"A=\"\"A=\"\"A=\"\"ea=\"\"><items><item></item><item></item></items>oks<ptr></ptr><i></i><i></i><f>0</f><dec><k></k></dec><toks><A/><y><A/></y></toks></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":null,"Char":"oks"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003eoks\u003cptr\u003e\u003c/ptr\u003e\u003ci\u003e\u003c/i\u003e\u003ci\u003e\u003c/i\u003e\u003cf\u003e0\u003c/f\u003e\u003cdec\u003e\u003ck\u003e\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cA/\u003e\u003cy\u003e\u003cA/\u003e\u003c/y\u003e\u003c/toks\u003e"} err=
+{"N":"1","V":"oks","K":null} err=
+"oks" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"F":0,"U":0,"T":"","Dec":{"N":"","V":"","K":[""]},"Toks":{"Names":["A","y","A"]},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"oks","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"id"},"Value":""},{"Name":{"Space":"","Local":"n"},"Value":"1"},{"Name":{"Space":"","Local":"b"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"ea"},"Value":""}],"Text":"oks"}] err=
+=== "<xyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy id=\"i\"/>\xaf-d-->e</\xff\x80"
+- err=expected element type <root> but have <xyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy>
+{"XMLName":{"Space":"","Local":"xyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"},"ID":"i","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <xyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy>
+[{"XMLName":{"Space":"","Local":"xyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"i"}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><![CDATA[\"&]]>\"0000</root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":"\"\u0026\"0000"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003c![CDATA[\"\u0026]]\u003e\"0000"} err=
+{"N":"","V":"\"\u0026\"0000","K":null} err=
+"\"\u0026\"0000" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"\"\u0026\"0000","Remark":""} err=
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"Text":"\"\u0026\"0000"}] err=
+=== "<A00 n=\"0\"/><k>>><<xkk/k>0</AA|>"
+- err=expected element type <root> but have <A00>
+{"XMLName":{"Space":"","Local":"A00"},"ID":"","Inner":""} err=
+{"N":"0","V":"","K":null} err=
+- err=
+- err=expected element type <root> but have <A00>
+[{"XMLName":{"Space":"","Local":"A00"},"Attrs":[{"Name":{"Space":"","Local":"n"},"Value":"0"}],"Text":""}] err=
+=== "<x>\"<!<!--0></x>"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"","Inner":"\"\u003c!\u003c!--0\u003e"} err=
+{"N":"","V":"\"","K":null} err=
+"\"" err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":null,"Text":"\""}] err=
+=== "<x>\"<!<!--></x>"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"","Inner":"\"\u003c!\u003c!--\u003e"} err=
+{"N":"","V":"\"","K":null} err=
+"\"" err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":null,"Text":"\""}] err=
+=== "<root xmlns=\"urn:n\" id=\"1\" n=\"2\" b=\"true\" xmlns:a=\"urn:a\" a:x=\"ax\" ta=\"tv\" ma=\"mv\" other=\"o\" ea=\"E\"><e>emb</e><items><item>one</item><item>two</item></items><a><b><c>deep</c></b></a><ptr ea=\"p\"><e>pe</e></ptr><i>1</i><i>-2</i><f>u.5</f><u>255</u><t>tt</t><dec n=\"d\">dv<k>k1</k></dec><toks><x/><y><z/></y></toks><bytes>raw</bytes><iface>if</iface><extra q=\"1\">ex</extra>chars<!--note--></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"TA":"tv","E":"emb","A":"E","Items":["one","two"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"U":255,"T":"tt","Dec":{"N":"d","V":"dv","K":["k1"]},"Toks":{"Names":["x","y","z"]},"Bytes":"cmF3","Char":"chars"} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","Inner":"\u003ce\u003eemb\u003c/e\u003e\u003citems\u003e\u003citem\u003eone\u003c/item\u003e\u003citem\u003etwo\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003cc\u003edeep\u003c/c\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr ea=\"p\"\u003e\u003ce\u003epe\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e1\u003c/i\u003e\u003ci\u003e-2\u003c/i\u003e\u003cf\u003eu.5\u003c/f\u003e\u003cu\u003e255\u003c/u\u003e\u003ct\u003ett\u003c/t\u003e\u003cdec n=\"d\"\u003edv\u003ck\u003ek1\u003c/k\u003e\u003c/dec\u003e\u003ctoks\u003e\u003cx/\u003e\u003cy\u003e\u003cz/\u003e\u003c/y\u003e\u003c/toks\u003e\u003cbytes\u003eraw\u003c/bytes\u003e\u003ciface\u003eif\u003c/iface\u003e\u003cextra q=\"1\"\u003eex\u003c/extra\u003echars\u003c!--note--\u003e"} err=
+{"N":"2","V":"chars","K":null} err=
+"chars" err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"1","N":2,"B":true,"NS":"ax","TA":"tv","MA":{"V":"ma=mv"},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"","Local":"other"},"Value":"o"}],"E":"emb","A":"E","Items":["one","two"],"Deep":"deep","Ptr":{"E":"pe","A":"p"},"Ints":[1,-2],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseFloat: parsing "u.5": invalid syntax
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"id"},"Value":"1"},{"Name":{"Space":"","Local":"n"},"Value":"2"},{"Name":{"Space":"","Local":"b"},"Value":"true"},{"Name":{"Space":"xmlns","Local":"a"},"Value":"urn:a"},{"Name":{"Space":"urn:a","Local":"x"},"Value":"ax"},{"Name":{"Space":"","Local":"ta"},"Value":"tv"},{"Name":{"Space":"","Local":"ma"},"Value":"mv"},{"Name":{"Space":"","Local":"other"},"Value":"o"},{"Name":{"Space":"","Local":"ea"},"Value":"E"}],"Text":"chars"}] err=
+=== "<A: />"
+- err=expected element type <root> but have <A:>
+{"XMLName":{"Space":"","Local":"A:"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <A:>
+[{"XMLName":{"Space":"","Local":"A:"},"Attrs":null,"Text":""}] err=
+=== "<A/><A/><A/><A/><A/><A/>"
+- err=expected element type <root> but have <A>
+{"XMLName":{"Space":"","Local":"A"},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <A>
+[{"XMLName":{"Space":"","Local":"A"},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"A=\"\"n=\"1\"b=\"\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"><e></e><items><item></item><item></item></items><ptr><e></e></ptr><i></i><f>A</f><u></u><t></t><dec></dec><bytes></bytes></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0],"U":0,"T":"","Dec":{"N":"","V":"","K":null},"Toks":{"Names":null},"Bytes":"","Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003cptr\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e\u003c/i\u003e\u003cf\u003eA\u003c/f\u003e\u003cu\u003e\u003c/u\u003e\u003ct\u003e\u003c/t\u003e\u003cdec\u003e\u003c/dec\u003e\u003cbytes\u003e\u003c/bytes\u003e"} err=
+{"N":"1","V":"","K":null} err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseFloat: parsing "A": invalid syntax
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"n"},"Value":"1"},{"Name":{"Space":"","Local":"b"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}] err=
+=== "<x id=\"i\"/>\xaf-d-->e</\xff\x80"
+- err=expected element type <root> but have <x>
+{"XMLName":{"Space":"","Local":"x"},"ID":"i","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <x>
+[{"XMLName":{"Space":"","Local":"x"},"Attrs":[{"Name":{"Space":"","Local":"id"},"Value":"i"}],"Text":""}] err=
+=== "<A./>"
+- err=expected element type <root> but have <A.>
+{"XMLName":{"Space":"","Local":"A."},"ID":"","Inner":""} err=
+- err=
+- err=
+- err=expected element type <root> but have <A.>
+[{"XMLName":{"Space":"","Local":"A."},"Attrs":null,"Text":""}] err=
+=== "<root xmlns=\"urn:n\"A=\"\"n=\"1\"b=\"\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"A=\"\"><e></e><items><item></item><item></item></items><a><b></b></a><ptr A=\"\"><e></e></ptr><i>0</i><i>0</i><f>A</f><u>0</u><t>0</t><dec A=\"\"></dec><toks></toks><bytes></bytes><iface></iface><extra A=\"\"></extra></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"TA":"","E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"U":0,"T":"0","Dec":{"N":"","V":"","K":null},"Toks":{"Names":null},"Bytes":"","Char":""} err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":"\u003ce\u003e\u003c/e\u003e\u003citems\u003e\u003citem\u003e\u003c/item\u003e\u003citem\u003e\u003c/item\u003e\u003c/items\u003e\u003ca\u003e\u003cb\u003e\u003c/b\u003e\u003c/a\u003e\u003cptr A=\"\"\u003e\u003ce\u003e\u003c/e\u003e\u003c/ptr\u003e\u003ci\u003e0\u003c/i\u003e\u003ci\u003e0\u003c/i\u003e\u003cf\u003eA\u003c/f\u003e\u003cu\u003e0\u003c/u\u003e\u003ct\u003e0\u003c/t\u003e\u003cdec A=\"\"\u003e\u003c/dec\u003e\u003ctoks\u003e\u003c/toks\u003e\u003cbytes\u003e\u003c/bytes\u003e\u003ciface\u003e\u003c/iface\u003e\u003cextra A=\"\"\u003e\u003c/extra\u003e"} err=
+{"N":"1","V":"","K":null} err=
+- err=
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":1,"B":false,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"E":"","A":"","Items":["",""],"Deep":"","Ptr":{"E":"","A":""},"Ints":[0,0],"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=strconv.ParseFloat: parsing "A": invalid syntax
+[{"XMLName":{"Space":"urn:n","Local":"root"},"Attrs":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"n"},"Value":"1"},{"Name":{"Space":"","Local":"b"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""},{"Name":{"Space":"","Local":"A"},"Value":""}],"Text":""}] err=
+=== "<root xmlns=\"urn:n\"><toks><x></toks></root>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":["x"]},"Bytes":null,"Char":""} err=XML syntax error on line 1: element <x> closed by </toks>
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":""} err=XML syntax error on line 1: element <x> closed by </toks>
+- err=XML syntax error on line 1: element <x> closed by </toks>
+- err=XML syntax error on line 1: element <x> closed by </toks>
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":["x"]},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=XML syntax error on line 1: element <x> closed by </toks>
+[] err=XML syntax error on line 1: element <x> closed by </toks>
+=== "<root xmlns=\"urn:n\"></wrong>"
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"TA":"","E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Char":""} err=XML syntax error on line 1: element <root> closed by </wrong>
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","Inner":""} err=XML syntax error on line 1: element <root> closed by </wrong>
+- err=XML syntax error on line 1: element <root> closed by </wrong>
+- err=XML syntax error on line 1: element <root> closed by </wrong>
+{"XMLName":{"Space":"urn:n","Local":"root"},"ID":"","N":0,"B":null,"NS":"","TA":"","MA":{"V":""},"Rest":[{"Name":{"Space":"","Local":"xmlns"},"Value":"urn:n"}],"E":"","A":"","Items":null,"Deep":"","Ptr":null,"Ints":null,"F":0,"U":0,"T":"","Dec":null,"Toks":{"Names":null},"Bytes":null,"Iface":null,"Skip":"","Any":null,"Char":"","Remark":""} err=XML syntax error on line 1: element <root> closed by </wrong>
+[] err=XML syntax error on line 1: element <root> closed by </wrong>

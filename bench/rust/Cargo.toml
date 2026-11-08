@@ -1,0 +1,19 @@
+[package]
+name = "qx_bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+quick-xml = "0.40.1"
+
+[[bin]]
+name = "qx_bench"
+path = "src/main.rs"
+
+[[bin]]
+name = "qx_writer"
+path = "src/bin/writer.rs"
+
+[[bin]]
+name = "qx_staxwriter"
+path = "src/bin/staxwriter.rs"
